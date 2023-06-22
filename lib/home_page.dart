@@ -17,12 +17,12 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       body: InkWell(
         onTap: () {
-          generateRandomColor();
           setState(() {
             _backgroundColor = generateRandomColor();
           });
         },
-        child: ColoredBox(
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 500),
           color: _backgroundColor,
           child: const Center(
             child: Text('Hello World'),
