@@ -26,7 +26,7 @@ class _HomePageState extends State<HomePage> {
           duration: const Duration(milliseconds: 500),
           color: _backgroundColor,
           child: const Center(
-            child: Text('Hello World'),
+            child: Text('Hello there!'),
           ),
         ),
       ),
