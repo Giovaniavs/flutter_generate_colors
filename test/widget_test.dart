@@ -1,30 +1,51 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
 import 'package:flutter/material.dart';
+import 'package:flutter_generate_colors/main.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:flutter_generate_colors/main.dart';
-
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+  testWidgets(
+    'Test the existence of the Hello There text and the AnimatedContainer.',
+    (WidgetTester tester) async {
+      await tester.pumpWidget(const Main());
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+      expect(find.text('Hello there!'), findsOneWidget);
+      expect(find.byType(AnimatedContainer), findsOneWidget);
+    },
+  );
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+  testWidgets(
+    "Test the color changing",
+    (WidgetTester tester) async {
+      await tester.pumpWidget(const Main());
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
-  });
+      // Finds the AnimatedContainer reference.
+      Finder coloredContainerFinder = find.byType(AnimatedContainer);
+
+      // Gets the AnimatedContainer widget.
+      AnimatedContainer coloredContainerWidget =
+          tester.firstWidget(coloredContainerFinder);
+
+      // Gets the AnimatedContainer decoration style.
+      final Decoration? firstColoredContainerDecoration =
+          coloredContainerWidget.decoration;
+
+      // Taps the AnimatedContainer to trigger the setState in the screen.
+      await tester.tap(coloredContainerFinder);
+      await tester.pump();
+
+      // Now it is necessary to update the variables with the new values
+      coloredContainerFinder = find.byType(AnimatedContainer);
+      coloredContainerWidget = tester.firstWidget(coloredContainerFinder);
+
+      // Consuming from the updated variables, gets the new decoration style.
+      final Decoration? secondColoredContainerDecoration =
+          coloredContainerWidget.decoration;
+
+      // Compares the two decoration styles to check if they are different.
+      expect(
+        true,
+        firstColoredContainerDecoration != secondColoredContainerDecoration,
+      );
+    },
+  );
 }
